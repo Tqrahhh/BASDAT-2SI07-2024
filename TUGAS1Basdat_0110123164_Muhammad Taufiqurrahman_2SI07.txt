@@ -1,0 +1,973 @@
+TUGAS 1 BASIS DATA
+
+		
+Nama : Muhammad Taufiqurrahman
+Nim : 0110123164
+Rombel : 2SI07
+
+
+		Jawaban soal no.1 (BUAT DATABASE DBPEGAWAI)
+
+MariaDB [(none)]> create database dbpegawai;
+Query OK, 1 row affected (0.002 sec)
+
+		Jawaban soal no.2 (PERINTAH USE DBPEGAWAI)
+
+MariaDB [(none)]> USE dbpegawai;
+Database changed
+
+		Jawaban soal no.3 (BUAT TABEL DIVISI)
+
+MariaDB [dbpegawai]> CREATE table divisi(
+    -> id int primary key auto_increment,
+    -> nama varchar(30) not null unique);
+Query OK, 0 rows affected (0.045 sec)
+
+		Jawaban soal no.4 (TAMPILKAN DESKRIPSI DIVISI)
+
+MariaDB [dbpegawai]> DESC divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.031 sec)
+
+		Jawaban soal no.5 (BUAT TABEL JABATAN)
+
+MariaDB [dbpegawai]> CREATE table jabatan(
+    -> id int primary key auto_increment,
+    -> nama varchar(30) not null unique);
+Query OK, 0 rows affected (0.059 sec)
+
+		Jawaban soal no.6 (TAMPILKAN DESKRIPSI JABATAN)
+
+MariaDB [dbpegawai]> DESC jabatan;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.032 sec)
+
+		Jawaban soal no.7 (BUAT TABEL PEGAWAI)
+
+MariaDB [dbpegawai]> CREATE table pegawai(
+    -> id int primary key auto_increment,
+    -> nip char(5) not null unique),
+    -> nama varchar(30) not null,
+    -> gender enum('Laki Laki', 'Prempuan') not null,
+    -> tmp_lahir varchar(30) not null,
+    -> tgl_lahir date not null,
+    -> iddivisi int not null,
+    -> idjabatan int not null,
+    -> alamat text,
+    -> foreign key (iddivisi) references divisi(id),
+    -> foreign key (idjabatan) references jabatan(id)
+    -> );
+
+		Jawaban soal no.8 (TAMPILKAN DESKRIPSI PEGAWAI)
+
+MariaDB [dbpegawai]> DESC pegawai;
++-----------+------------------------------+------+-----+---------+----------------+
+| Field     | Type                         | Null | Key | Default | Extra          |
++-----------+------------------------------+------+-----+---------+----------------+
+| id        | int(11)                      | NO   | PRI | NULL    | auto_increment |
+| nip       | char(5)                      | NO   | UNI | NULL    |                |
+| nama      | varchar(30)                  | NO   |     | NULL    |                |
+| gender    | enum('Laki Laki','Prempuan') | NO   |     | NULL    |                |
+| tmp_lahir | varchar(30)                  | NO   |     | NULL    |                |
+| tgl_lahir | date                         | NO   |     | NULL    |                |
+| iddivisi  | int(11)                      | NO   | MUL | NULL    |                |
+| idjabatan | int(11)                      | NO   | MUL | NULL    |                |
+| alamat    | text                         | YES  |     | NULL    |                |
++-----------+------------------------------+------+-----+---------+----------------+
+9 rows in set (0.025 sec)
+
+		Jawaban soal no.9 (TAMPILAN TABEL-TABEL DBPEGAWAI)
+
+MariaDB [dbpegawai]> SHOW tables;
++---------------------+
+| Tables_in_dbpegawai |
++---------------------+
+| divisi              |
+| jabatan             |
+| pegawai             |
++---------------------+
+3 rows in set (0.001 sec)
+
+		Jawaban soal no.10 (INPUT DATA DIVISI)
+
+MariaDB [dbpegawai]> INSERT into divisi values
+    -> ('', 'IT'),
+    -> ('', 'Keuangan'),
+    -> ('', 'Marketing'),
+    -> ('', 'SDM');
+Query OK, 4 rows affected, 4 warnings (0.097 sec)
+Records: 4  Duplicates: 0  Warnings: 4
+
+		Jawaban soal no.11 (TAMPILKAN SELURUH DATA DIVISI)
+
+MariaDB [dbpegawai]> SELECT * from divisi;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  1 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  4 | SDM       |
++----+-----------+
+4 rows in set (0.001 sec)
+
+		Jawaban soal no.12 (INPUT DATA JABATAN)
+
+MariaDB [dbpegawai]> INSERT into jabatan values
+    -> ('', 'Direktur'),
+    -> ('', 'Manajer'),
+    -> ('', 'Asisten Manajer'),
+    -> ('', 'Staff');
+Query OK, 4 rows affected, 4 warnings (0.011 sec)
+Records: 4  Duplicates: 0  Warnings: 4
+
+		Jawaban soal no.13 (TAMPILKAN SELURUH DATA JABATAN)
+
+MariaDB [dbpegawai]> SELECT * from jabatan;
++----+-----------------+
+| id | nama            |
++----+-----------------+
+|  3 | Asisten Manajer |
+|  1 | Direktur        |
+|  2 | Manajer         |
+|  4 | Staff           |
++----+-----------------+
+4 rows in set (0.001 sec)
+
+		Jawaban soal no.14 (INPUT DATA 20 ORANG PEGAWAI)
+
+MariaDB [dbpegawai]> INSERT into pegawai (nip, nama, gender, tmp_lahir, tgl_lahir, iddivisi, idjabatan, alamat) values
+    -> ('20001', 'Muhammad Taufiqurrahman', 'Laki Laki', 'Tanggerang', '1975-01-01', 1, 1, 'Jl. Bayam No. 1'),
+    -> ('20002', 'Siti Nurhaliza', 'Prempuan', 'Bekasi', '1976-02-02', 1, 2, 'Jl. Kangkung No. 2'),
+    -> ('20003', 'Daden Dharmawan', 'Laki Laki', 'Bogor', '1977-03-03', 1, 3, 'Jl. Pare No. 3'),
+    -> ('20004', 'Shofa Farhatul Muslimah', 'Prempuan', 'Citayam', '1978-04-04', 1, 4, 'Jl. Cabe No. 4'),
+    -> ('20005', 'Rafi Baihaqi', 'Laki Laki', 'Cibinong', '1979-05-05', 1, 4, 'Jl. Sereh No. 5'),
+    -> ('20006', 'Febi Febrianti', 'Prempuan', 'Depok', '1980-06-06', 2, 1, 'Jl. Wortel No. 6'),
+    -> ('20007', 'Muhammad Al Fajri', 'Laki Laki', 'Cianjur', '1981-07-07', 2, 2, 'Jl. Kentang No. 7'),
+    -> ('20008', 'Iqlima Hafsha', 'Prempuan', 'Bandung', '1982-08-08', 2, 3, 'Jl. Sawi No. 8'),
+    -> ('20009', 'Fakhirul Akmal', 'Laki Laki', 'Majalengka', '1983-09-09', 2, 4, 'Jl. Kacang No. 9'),
+    -> ('20010', 'Adina Khairunnisa', 'Prempuan', 'Banten', '1984-10-10', 2, 4, 'Jl. Tomat No. 10'),
+    -> ('20011', 'Muhammad Danish Suju', 'Laki Laki', 'Bojong', '1985-11-11', 3, 1, 'Jl. Buncis No. 11'),
+    -> ('20012', 'Destia Zhalfica', 'Prempuan', 'Cikarang', '2000-12-12', 3, 2, 'Jl. Kedelai No. 12'),
+    -> ('20013', 'Muhammad Rasyid Sholahudin', 'Laki Laki', 'Jonggol', '2001-13-13', 3, 3, 'Jl. Lada No. 13'),
+    -> ('20014', 'Deryanti Amaliah', 'Prempuan', 'Sukabumi', '2002-14-14', 3, 4, 'Jl. Cengkeh No. 14'),
+    -> ('20015', 'Abdurrahman Fayadh', 'Laki Laki', 'Cirebon', '2003-15-15', 3, 4, 'Jl. Bawang No. 15'),
+    -> ('20016', 'Ghiyadika Nurhanda Putri', 'Prempuan', 'Cilegon', '2004-16-16', 4, 1, 'Jl. Timun No. 16'),
+    -> ('20017', 'Umar Maulana', 'Laki Laki', 'Cikeas', '2005-17-17', 4, 2, 'Jl. Pokcoy No. 17'),
+    -> ('20018', 'Mutia Aulia Kalsum', 'Prempuan', 'Purwakarta', '2006-18-18', 4, 3, 'Jl. Bombay No. 18'),
+    -> ('20019', 'Nizar Al Faiq', 'Laki Laki', 'Batujajar', '2007-19-19', 4, 4, 'Jl. Paprika No. 19'),
+    -> ('20020', 'Nafisa Khairunnisa', 'Prempuan', 'Pangalengan', '2008-20-20', 4, 4, 'Jl. Toge No. 20');
+Query OK, 20 rows affected, 8 warnings (0.047 sec)
+Records: 20  Duplicates: 0  Warnings: 8
+
+		Jawaban soal no.15 (TAMPILKAN SELURUH DATA PEGAWAI)
+
+MariaDB [dbpegawai]> SELECT * from pegawai;
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+--------------------+
+| id | nip   | nama                       | gender    | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat             |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+--------------------+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki | Tanggerang  | 1975-01-01 |        1 |         1 | Jl. Bayam No. 1    |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan  | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2 |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3     |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan  | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4     |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki | Cibinong    | 1979-05-05 |        1 |         4 | Jl. Sereh No. 5    |
+|  6 | 20006 | Febi Febrianti             | Prempuan  | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6   |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7  |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan  | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8     |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9   |
+| 10 | 20010 | Adina Khairunnisa          | Prempuan  | Banten      | 1984-10-10 |        2 |         4 | Jl. Tomat No. 10   |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11  |
+| 12 | 20012 | Destia Zhalfica            | Prempuan  | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13    |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan  | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14 |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki | Cirebon     | 2003-03-15 |        3 |         4 | Jl. Bawang No. 15  |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan  | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16   |
+| 17 | 20017 | Asep Rohim                 | Laki Laki | Cikeas      | 2005-05-17 |        4 |         2 | Jl. Pokcoy No. 17  |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan  | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18  |
+| 19 | 20019 | Nizar Al Faiq              | Laki Laki | Batujajar   | 2007-07-19 |        4 |         4 | Jl. Paprika No. 19 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan  | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20    |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+--------------------+
+20 rows in set (0.001 sec)
+
+		Jawaban soal no.16 (UBAH 5 DATA PEGAWAI)
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tmp_lahir = 'Jakarta', tgl_lahir = '1987-05-15', alamat = 'Jl. Lengkuas No. 25' where id = 15;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tmp_lahir = 'Jakarta', tgl_lahir = '1988-06-25', alamat = 'Jl. Terong No. 35' where id = 17;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tmp_lahir = 'Jakarta', tgl_lahir = '1989-07-29', alamat = 'Jl. Selada No. 45' where id = 1;
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tmp_lahir = 'Jogja', tgl_lahir = '2009-08-11', alamat = 'Jl. Seledri No. 55' where id = 5;
+Query OK, 1 row affected (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> tmp_lahir = 'Jogja', tgl_lahir = '2010-09-13', alamat = 'Jl. Jahe No. 65' where id = 10;
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbpegawai]> SELECT * from pegawai;
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+
+| id | nip   | nama                       | gender    | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan  | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan  | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  |
+|  6 | 20006 | Febi Febrianti             | Prempuan  | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan  | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    |
+| 10 | 20010 | Adina Khairunnisa          | Prempuan  | Jogja       | 2010-09-13 |        2 |         4 | Jl. Jahe No. 65     |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   |
+| 12 | 20012 | Destia Zhalfica            | Prempuan  | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan  | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan  | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    |
+| 17 | 20017 | Asep Rohim                 | Laki Laki | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan  | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   |
+| 19 | 20019 | Nizar Al Faiq              | Laki Laki | Batujajar   | 2007-07-19 |        4 |         4 | Jl. Paprika No. 19  |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan  | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+
+20 rows in set (0.001 sec)
+
+		Jawaban soal no.17 (HAPUS 2 DATA PEGAWAI)
+
+MariaDB [dbpegawai]> DELETE from pegawai WHERE id = 10;
+Query OK, 1 row affected (0.008 sec)
+
+MariaDB [dbpegawai]> DELETE from pegawai WHERE id = 19;
+Query OK, 1 row affected (0.011 sec)
+
+MariaDB [dbpegawai]> SELECT * from pegawai;
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+
+| id | nip   | nama                       | gender    | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan  | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan  | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  |
+|  6 | 20006 | Febi Febrianti             | Prempuan  | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan  | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   |
+| 12 | 20012 | Destia Zhalfica            | Prempuan  | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan  | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan  | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    |
+| 17 | 20017 | Asep Rohim                 | Laki Laki | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan  | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan  | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+
+18 rows in set (0.002 sec)
+
+		Jawaban soal no.18 (MENAMBAHKAN KOLOM DATA BB PEGAWAI)
+
+MariaDB [dbpegawai]> ALTER table pegawai
+    -> add column bb float not null;
+Query OK, 0 rows affected (0.067 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '50 KG' WHERE id = 1;
+Query OK, 1 row affected, 1 warning (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '55 KG' WHERE id = 2;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '60 KG' WHERE id = 3;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '50 KG' WHERE id = 4;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '65 KG' WHERE id = 5;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '40 KG' WHERE id = 6;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '70 KG' WHERE id = 7;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '46 KG' WHERE id = 8;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '66 KG' WHERE id = 9;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '44 KG' WHERE id = 10;
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '68 KG' WHERE id = 11;
+Query OK, 1 row affected, 1 warning (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '49 KG' WHERE id = 12;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '58 KG' WHERE id = 13;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '51 KG' WHERE id = 14;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '66 KG' WHERE id = 15;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '43 KG' WHERE id = 16;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '75 KG' WHERE id = 17;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '54 KG' WHERE id = 18;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '77 KG' WHERE id = 19;
+Query OK, 0 rows affected (0.002 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> bb = '39 KG' WHERE id = 20;
+Query OK, 1 row affected, 1 warning (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> SELECT * from pegawai;
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+----+
+| id | nip   | nama                       | gender    | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              | bb |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+----+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   | 50 |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan  | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  | 55 |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      | 60 |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan  | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      | 50 |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  | 65 |
+|  6 | 20006 | Febi Febrianti             | Prempuan  | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    | 40 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   | 70 |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan  | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      | 46 |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    | 66 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |
+| 12 | 20012 | Destia Zhalfica            | Prempuan  | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  | 49 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     | 58 |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan  | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  | 51 |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan  | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    | 43 |
+| 17 | 20017 | Asep Rohim                 | Laki Laki | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan  | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   | 54 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan  | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     | 39 |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+----+
+18 rows in set (0.001 sec)
+
+		Jawaban soal no.19 (MENAMBAHKAN KOLOM DATA UMUR PEGAWAI)
+
+MariaDB [dbpegawai]> ALTER table pegawai
+    -> add column umur float not null;
+Query OK, 0 rows affected (0.019 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '35 Tahun' WHERE id = 1;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '48 Tahun' WHERE id = 2;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '47 Tahun' WHERE id = 3;
+Query OK, 1 row affected, 1 warning (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '46 Tahun' WHERE id = 4;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '15 Tahun' WHERE id = 5;
+Query OK, 1 row affected, 1 warning (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '44 Tahun' WHERE id = 6;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '43 Tahun' WHERE id = 7;
+Query OK, 1 row affected, 1 warning (0.010 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '42 Tahun' WHERE id = 8;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '41 Tahun' WHERE id = 9;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '39 Tahun' WHERE id = 11;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '24 Tahun' WHERE id = 12;
+Query OK, 1 row affected, 1 warning (0.009 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '23 Tahun' WHERE id = 13;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '22 Tahun' WHERE id = 14;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '37 Tahun' WHERE id = 15;
+Query OK, 1 row affected, 1 warning (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '20 Tahun' WHERE id = 16;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '36 Tahun' WHERE id = 17;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '18 Tahun' WHERE id = 18;
+Query OK, 1 row affected, 1 warning (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> update pegawai set
+    -> umur = '16 Tahun' WHERE id = 20;
+Query OK, 1 row affected, 1 warning (0.008 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [dbpegawai]> SELECT * from pegawai;
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                       | gender    | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+----+------+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   | 50 |   35 |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan  | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  | 55 |   48 |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      | 60 |   47 |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan  | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      | 50 |   46 |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  | 65 |   15 |
+|  6 | 20006 | Febi Febrianti             | Prempuan  | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    | 40 |   44 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   | 70 |   43 |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan  | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      | 46 |   42 |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    | 66 |   41 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |   39 |
+| 12 | 20012 | Destia Zhalfica            | Prempuan  | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  | 49 |   24 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     | 58 |   23 |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan  | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  | 51 |   22 |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan  | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    | 43 |   20 |
+| 17 | 20017 | Asep Rohim                 | Laki Laki | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |   36 |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan  | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   | 54 |   18 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan  | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     | 39 |   16 |
++----+-------+----------------------------+-----------+-------------+------------+----------+-----------+---------------------+----+------+
+18 rows in set (0.001 sec)
+
+		Jawaban soal no.20 (MENAMBAHKAN KOLOM DATA GENDER PEGAWAI)
+
+MariaDB [dbpegawai]> ALTER table pegawai
+    -> change column gender jenis_kelamin enum('Laki Laki', 'Prempuan') not null;
+Query OK, 0 rows affected (0.023 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpegawai]> SELECT * from pegawai;
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                       | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki     | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   | 50 |   35 |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan      | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  | 55 |   48 |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki     | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      | 60 |   47 |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan      | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      | 50 |   46 |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki     | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  | 65 |   15 |
+|  6 | 20006 | Febi Febrianti             | Prempuan      | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    | 40 |   44 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki     | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   | 70 |   43 |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan      | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      | 46 |   42 |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki     | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    | 66 |   41 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki     | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |   39 |
+| 12 | 20012 | Destia Zhalfica            | Prempuan      | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  | 49 |   24 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     | 58 |   23 |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan      | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  | 51 |   22 |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki     | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan      | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    | 43 |   20 |
+| 17 | 20017 | Asep Rohim                 | Laki Laki     | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |   36 |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan      | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   | 54 |   18 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     | 39 |   16 |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+18 rows in set (0.002 sec)
+
+		Jawaban soal no.21 (TAMPILKAN KOLOM NIP, NAMA, JENIS_KELAMIN, ALAMAT)
+
+MariaDB [dbpegawai]> SELECT nip, nama, jenis_kelamin, alamat from pegawai;
++-------+----------------------------+---------------+---------------------+
+| nip   | nama                       | jenis_kelamin | alamat              |
++-------+----------------------------+---------------+---------------------+
+| 20001 | Muhammad Taufiqurrahman    | Laki Laki     | Jl. Selada No. 45   |
+| 20002 | Siti Nurhaliza             | Prempuan      | Jl. Kangkung No. 2  |
+| 20003 | Daden Dharmawan            | Laki Laki     | Jl. Pare No. 3      |
+| 20004 | Shofa Farhatul Muslimah    | Prempuan      | Jl. Cabe No. 4      |
+| 20005 | Rafi Baihaqi               | Laki Laki     | Jl. Seledri No. 55  |
+| 20006 | Febi Febrianti             | Prempuan      | Jl. Wortel No. 6    |
+| 20007 | Muhammad Al Fajri          | Laki Laki     | Jl. Kentang No. 7   |
+| 20008 | Iqlima Hafsha              | Prempuan      | Jl. Sawi No. 8      |
+| 20009 | Fakhirul Akmal             | Laki Laki     | Jl. Kacang No. 9    |
+| 20011 | Muhammad Danish Suju       | Laki Laki     | Jl. Buncis No. 11   |
+| 20012 | Destia Zhalfica            | Prempuan      | Jl. Kedelai No. 12  |
+| 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jl. Lada No. 13     |
+| 20014 | Deryanti Amaliah           | Prempuan      | Jl. Cengkeh No. 14  |
+| 20015 | Kurnia Santoso             | Laki Laki     | Jl. Lengkuas No. 25 |
+| 20016 | Ghiyadika Nurhanda Putri   | Prempuan      | Jl. Timun No. 16    |
+| 20017 | Asep Rohim                 | Laki Laki     | Jl. Terong No. 35   |
+| 20018 | Mutia Aulia Kalsum         | Prempuan      | Jl. Bombay No. 18   |
+| 20020 | Nafisa Khairunnisa         | Prempuan      | Jl. Toge No. 20     |
++-------+----------------------------+---------------+---------------------+
+18 rows in set (0.001 sec)
+
+		Jawaban soal no.22 (TAMPILKAN BARIS TERTENTU YANG GENDER LAKI-LAKI)
+
+MariaDB [dbpegawai]> SELECT nip, nama, jenis_kelamin, alamat from pegawai
+    -> Where jenis_kelamin = 'Laki Laki';
++-------+----------------------------+---------------+---------------------+
+| nip   | nama                       | jenis_kelamin | alamat              |
++-------+----------------------------+---------------+---------------------+
+| 20001 | Muhammad Taufiqurrahman    | Laki Laki     | Jl. Selada No. 45   |
+| 20003 | Daden Dharmawan            | Laki Laki     | Jl. Pare No. 3      |
+| 20005 | Rafi Baihaqi               | Laki Laki     | Jl. Seledri No. 55  |
+| 20007 | Muhammad Al Fajri          | Laki Laki     | Jl. Kentang No. 7   |
+| 20009 | Fakhirul Akmal             | Laki Laki     | Jl. Kacang No. 9    |
+| 20011 | Muhammad Danish Suju       | Laki Laki     | Jl. Buncis No. 11   |
+| 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jl. Lada No. 13     |
+| 20015 | Kurnia Santoso             | Laki Laki     | Jl. Lengkuas No. 25 |
+| 20017 | Asep Rohim                 | Laki Laki     | Jl. Terong No. 35   |
++-------+----------------------------+---------------+---------------------+
+9 rows in set (0.009 sec)
+
+		Jawaban soal no.23 ( DTAMPILKAN BARIS TERTENTU YANG DIVISI IT DAN GENDER PREMPUAN)
+
+MariaDB [dbpegawai]> SELECT nip, nama, jenis_kelamin, iddivisi from pegawai
+    -> Where jenis_kelamin = 'Prempuan' AND iddivisi = 1;
++-------+-------------------------+---------------+----------+
+| nip   | nama                    | jenis_kelamin | iddivisi |
++-------+-------------------------+---------------+----------+
+| 20002 | Siti Nurhaliza          | Prempuan      |        1 |
+| 20004 | Shofa Farhatul Muslimah | Prempuan      |        1 |
++-------+-------------------------+---------------+----------+
+2 rows in set (0.016 sec)
+
+		Jawaban soal no.24 (TAMPILKAN DATA PEGAWAI YANG UMUR DIATAS 30 TAHUN DAN LAHIR DI JAKARTA)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> Where umur > 30 AND tmp_lahir = 'Jakarta';
++----+-------+-------------------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                    | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+-------------------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+|  1 | 20001 | Muhammad Taufiqurrahman | Laki Laki     | Jakarta   | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   | 50 |   35 |
+| 15 | 20015 | Kurnia Santoso          | Laki Laki     | Jakarta   | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
+| 17 | 20017 | Asep Rohim              | Laki Laki     | Jakarta   | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |   36 |
++----+-------+-------------------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+3 rows in set (0.008 sec)
+
+		Jawaban soal no.25 (TAMPILKAN DATA PEGAWAI DIVISI MARKETING UMUR DIATAS 30 TAHUN BERJENIS KELAMIN LAKI LAKI) "KARNA DIDATABASE SAYA TIDAK ADA PREMPUAN 				    YG BERUMUR DIATAS 30 JADI SAYA PAKAI LAKI LAKI"
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> Where iddivisi = 3 AND umur > 30 AND jenis_kelamin = 'Laki Laki';
++----+-------+----------------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                 | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+| 11 | 20011 | Muhammad Danish Suju | Laki Laki     | Bojong    | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |   39 |
+| 15 | 20015 | Kurnia Santoso       | Laki Laki     | Jakarta   | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
++----+-------+----------------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+2 rows in set (0.002 sec)
+
+		Jawaban soal no.26 (TAMPILKAN DATA PEGAWAI KEY NIP)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE nip = '20002';
++----+-------+----------------+---------------+-----------+------------+----------+-----------+--------------------+----+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat             | bb | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+--------------------+----+------+
+|  2 | 20002 | Siti Nurhaliza | Prempuan      | Bekasi    | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2 | 55 |   48 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+--------------------+----+------+
+1 row in set (0.002 sec)
+
+		Jawaban soal no.27 (TAMPILKAN DATA PEGAWAI NON KEY GENDER)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE jenis_kelamin = 'Prempuan';
++----+-------+--------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+| id | nip   | nama                     | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat             | bb | umur |
++----+-------+--------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+|  2 | 20002 | Siti Nurhaliza           | Prempuan      | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2 | 55 |   48 |
+|  4 | 20004 | Shofa Farhatul Muslimah  | Prempuan      | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4     | 50 |   46 |
+|  6 | 20006 | Febi Febrianti           | Prempuan      | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6   | 40 |   44 |
+|  8 | 20008 | Iqlima Hafsha            | Prempuan      | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8     | 46 |   42 |
+| 12 | 20012 | Destia Zhalfica          | Prempuan      | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12 | 49 |   24 |
+| 14 | 20014 | Deryanti Amaliah         | Prempuan      | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14 | 51 |   22 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri | Prempuan      | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16   | 43 |   20 |
+| 18 | 20018 | Mutia Aulia Kalsum       | Prempuan      | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18  | 54 |   18 |
+| 20 | 20020 | Nafisa Khairunnisa       | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20    | 39 |   16 |
++----+-------+--------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+9 rows in set (0.001 sec)
+
+		Jawaban soal no.28 (TAMPILKAN DATA PEGAWAI IN MENYEBUTKAN BEBERAPA NIP)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE nip in ('20002', '20006', '20008');
++----+-------+----------------+---------------+-----------+------------+----------+-----------+--------------------+----+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat             | bb | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+--------------------+----+------+
+|  2 | 20002 | Siti Nurhaliza | Prempuan      | Bekasi    | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2 | 55 |   48 |
+|  6 | 20006 | Febi Febrianti | Prempuan      | Depok     | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6   | 40 |   44 |
+|  8 | 20008 | Iqlima Hafsha  | Prempuan      | Bandung   | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8     | 46 |   42 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+--------------------+----+------+
+3 rows in set (0.006 sec)
+
+		Jawaban soal no.29 (TAMPILKAN DATA PEGAWAI NOT IN MENYEBUTKAN BEBERAPA TEMPAT LAHIR)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE tmp_lahir not in ('Jakarta', 'Sukabumi', 'Bekasi');
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+| id | nip   | nama                       | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat             | bb | umur |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+|  3 | 20003 | Daden Dharmawan            | Laki Laki     | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3     | 60 |   47 |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan      | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4     | 50 |   46 |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki     | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55 | 65 |   15 |
+|  6 | 20006 | Febi Febrianti             | Prempuan      | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6   | 40 |   44 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki     | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7  | 70 |   43 |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan      | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8     | 46 |   42 |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki     | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9   | 66 |   41 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki     | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11  | 68 |   39 |
+| 12 | 20012 | Destia Zhalfica            | Prempuan      | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12 | 49 |   24 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13    | 58 |   23 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan      | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16   | 43 |   20 |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan      | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18  | 54 |   18 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20    | 39 |   16 |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+13 rows in set (0.002 sec)
+
+		Jawaban soal no.30 (TAMPILKAN DATA PEGAWAI BEDASARKAN NAMA ASC)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> ORDER by nama asc;
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                       | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+| 17 | 20017 | Asep Rohim                 | Laki Laki     | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |   36 |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki     | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      | 60 |   47 |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan      | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  | 51 |   22 |
+| 12 | 20012 | Destia Zhalfica            | Prempuan      | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  | 49 |   24 |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki     | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    | 66 |   41 |
+|  6 | 20006 | Febi Febrianti             | Prempuan      | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    | 40 |   44 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan      | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    | 43 |   20 |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan      | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      | 46 |   42 |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki     | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki     | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   | 70 |   43 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki     | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |   39 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     | 58 |   23 |
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki     | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   | 50 |   35 |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan      | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   | 54 |   18 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     | 39 |   16 |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki     | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  | 65 |   15 |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan      | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      | 50 |   46 |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan      | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  | 55 |   48 |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+18 rows in set (0.007 sec)
+
+		Jawaban soal no.31 (TAMPILKAN BB GEMUK KE KURUS)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> ORDER by bb desc;
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                       | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+| 17 | 20017 | Asep Rohim                 | Laki Laki     | Jakarta     | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |   36 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki     | Cianjur     | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   | 70 |   43 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki     | Bojong      | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |   39 |
+|  9 | 20009 | Fakhirul Akmal             | Laki Laki     | Majalengka  | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    | 66 |   41 |
+| 15 | 20015 | Kurnia Santoso             | Laki Laki     | Jakarta     | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
+|  5 | 20005 | Rafi Baihaqi               | Laki Laki     | Jogja       | 2009-08-11 |        1 |         4 | Jl. Seledri No. 55  | 65 |   15 |
+|  3 | 20003 | Daden Dharmawan            | Laki Laki     | Bogor       | 1977-03-03 |        1 |         3 | Jl. Pare No. 3      | 60 |   47 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jonggol     | 2001-01-13 |        3 |         3 | Jl. Lada No. 13     | 58 |   23 |
+|  2 | 20002 | Siti Nurhaliza             | Prempuan      | Bekasi      | 1976-02-02 |        1 |         2 | Jl. Kangkung No. 2  | 55 |   48 |
+| 18 | 20018 | Mutia Aulia Kalsum         | Prempuan      | Purwakarta  | 2006-06-18 |        4 |         3 | Jl. Bombay No. 18   | 54 |   18 |
+| 14 | 20014 | Deryanti Amaliah           | Prempuan      | Sukabumi    | 2002-02-14 |        3 |         4 | Jl. Cengkeh No. 14  | 51 |   22 |
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki     | Jakarta     | 1989-07-29 |        1 |         1 | Jl. Selada No. 45   | 50 |   35 |
+|  4 | 20004 | Shofa Farhatul Muslimah    | Prempuan      | Citayam     | 1978-04-04 |        1 |         4 | Jl. Cabe No. 4      | 50 |   46 |
+| 12 | 20012 | Destia Zhalfica            | Prempuan      | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12  | 49 |   24 |
+|  8 | 20008 | Iqlima Hafsha              | Prempuan      | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8      | 46 |   42 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri   | Prempuan      | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16    | 43 |   20 |
+|  6 | 20006 | Febi Febrianti             | Prempuan      | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6    | 40 |   44 |
+| 20 | 20020 | Nafisa Khairunnisa         | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20     | 39 |   16 |
++----+-------+----------------------------+---------------+-------------+------------+----------+-----------+---------------------+----+------+
+18 rows in set (0.005 sec)
+
+		Jawaban soal no.32 (TAMPILKAN 5 DATA PEGAWAI TERATAS LIMIT)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> ORDER by bb desc LIMIT 5;
++----+-------+----------------------+---------------+------------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama                 | jenis_kelamin | tmp_lahir  | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------------+---------------+------------+------------+----------+-----------+---------------------+----+------+
+| 17 | 20017 | Asep Rohim           | Laki Laki     | Jakarta    | 1988-06-25 |        4 |         2 | Jl. Terong No. 35   | 75 |   36 |
+|  7 | 20007 | Muhammad Al Fajri    | Laki Laki     | Cianjur    | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7   | 70 |   43 |
+| 11 | 20011 | Muhammad Danish Suju | Laki Laki     | Bojong     | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11   | 68 |   39 |
+|  9 | 20009 | Fakhirul Akmal       | Laki Laki     | Majalengka | 1983-09-09 |        2 |         4 | Jl. Kacang No. 9    | 66 |   41 |
+| 15 | 20015 | Kurnia Santoso       | Laki Laki     | Jakarta    | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
++----+-------+----------------------+---------------+------------+------------+----------+-----------+---------------------+----+------+
+5 rows in set (0.001 sec)
+
+		Jawaban soal no.33 (TAMPILKAN 5 DATA PEGAWAI TERBAWAH LIMIT OFFSET)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> ORDER by bb LIMIT 5 OFFSET 0;
++----+-------+--------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+| id | nip   | nama                     | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat             | bb | umur |
++----+-------+--------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+| 20 | 20020 | Nafisa Khairunnisa       | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20    | 39 |   16 |
+|  6 | 20006 | Febi Febrianti           | Prempuan      | Depok       | 1980-06-06 |        2 |         1 | Jl. Wortel No. 6   | 40 |   44 |
+| 16 | 20016 | Ghiyadika Nurhanda Putri | Prempuan      | Cilegon     | 2004-04-16 |        4 |         1 | Jl. Timun No. 16   | 43 |   20 |
+|  8 | 20008 | Iqlima Hafsha            | Prempuan      | Bandung     | 1982-08-08 |        2 |         3 | Jl. Sawi No. 8     | 46 |   42 |
+| 12 | 20012 | Destia Zhalfica          | Prempuan      | Cikarang    | 2000-12-12 |        3 |         2 | Jl. Kedelai No. 12 | 49 |   24 |
++----+-------+--------------------------+---------------+-------------+------------+----------+-----------+--------------------+----+------+
+5 rows in set (0.002 sec)
+
+		Jawaban soal no.34 (TAMPILKAN JUMLAH PEGAWAI FUNGSI COUNT)
+
+MariaDB [dbpegawai]> SELECT count(*) as jumlah_pegawai from pegawai;
++----------------+
+| jumlah_pegawai |
++----------------+
+|             18 |
++----------------+
+1 row in set (0.009 sec)
+
+
+		Jawaban soal no.35 (TAMPILKAN NIP, NAMA, UMUR PALING TUA FUNGSI MAX)
+
+MariaDB [dbpegawai]> SELECT nip, nama, umur from pegawai
+    -> WHERE umur = (SELECT max(umur) from pegawai);
++-------+----------------+------+
+| nip   | nama           | umur |
++-------+----------------+------+
+| 20002 | Siti Nurhaliza |   48 |
++-------+----------------+------+
+1 row in set (0.009 sec)
+
+		Jawaban soal no.36 (TAMPILKAN NIP, NAMA, BB PALING KURUS FUNGSI MIN)
+
+MariaDB [dbpegawai]> SELECT nip, nama, bb from pegawai
+    -> WHERE bb = (SELECT min(bb) from pegawai);
++-------+-------------------+----+
+| nip   | nama              | bb |
++-------+-------------------+----+
+| 20020 | Nafisa khairunnisa| 39 |
++-------+-------------------+----+
+1 row in set (0.002 sec)
+
+		Jawaban soal no.37 (TAMPILKAN DATA RATA-RATA UMUR PEGAWAI FUNGSI AVG)
+
+MariaDB [dbpegawai]> SELECT avg (umur) as rata_rata_umur from pegawai;
++--------------------+
+| rata_rata_umur     |
++--------------------+
+| 33.111111111111114 |
++--------------------+
+1 row in set (0.001 sec)
+
+		Jawaban soal no.38 (TAMPILKAN JUMLAH DATA PEGAWAI LAKI LAKI YANG UMUR LEBIH 40 TAHUN JABATAN MANAJER FUNGSI COUNT KLAUSA AND)
+
+MariaDB [dbpegawai]> SELECT count(*) as jumlah_manajer from pegawai
+    -> WHERE jenis_kelamin = 'Laki Laki' AND umur > 40 AND idjabatan = 2;
++----------------+
+| jumlah_manajer |
++----------------+
+|              1 |
++----------------+
+1 row in set (0.006 sec)
+
+
+		Jawaban soal no.39 (TAMPILKAN JUMLAH DATA PEGAWAI PREMPUAN YANG UMUR KURANG DARI 40 TAHUN JABATAN STAFF FUNGSI COUNT KLAUSA AND)
+
+MariaDB [dbpegawai]> SELECT count(*) as jumlah_staff from pegawai
+    -> WHERE jenis_kelamin = 'Prempuan' AND umur < 40 AND idjabatan = 4;
++--------------+
+| jumlah_staff |
++--------------+
+|            2 |
++--------------+
+1 row in set (0.004 sec)
+
+		Jawaban soal no.40 (TAMPILKAN JUMLAH DATA PEGAWAI PREMPUAN FUNGSI COUNT)
+
+MariaDB [dbpegawai]> SELECT count(*) as jumlah_pegawai_pr from pegawai
+    -> WHERE jenis_kelamin = 'Prempuan';
++-------------------+
+| jumlah_pegawai_pr |
++-------------------+
+|                 9 |
++-------------------+
+1 row in set (0.001 sec)
+
+		Jawaban soal no.41 (TAMPILKAN DATA JUMLAH PEGAWAI BEKERJA DIVISI SDM FUNGSI SUM KLAUSA WHERE)
+
+MariaDB [(none)]> USE dbpegawai;
+Database changed
+MariaDB [dbpegawai]> SELECT count(*) AS jumlah_pegawai_SDM from pegawai
+    -> WHERE iddivisi = 4;
++--------------------+
+| jumlah_pegawai_SDM |
++--------------------+
+|                  4 |
++--------------------+
+1 row in set (0.089 sec)
+
+		Jawaban soal no.42 (TAMPILKAN JUMLAH PEGAWAI DIVISI MASING-MASING FUNGSI COUNT KLAUSA GROUP BY)
+
+MariaDB [dbpegawai]> SELECT iddivisi, count(*) AS jumlah_pegawai from pegawai
+    -> GROUP BY iddivisi;
++----------+----------------+
+| iddivisi | jumlah_pegawai |
++----------+----------------+
+|        1 |              5 |
+|        2 |              4 |
+|        3 |              5 |
+|        4 |              4 |
++----------+----------------+
+4 rows in set (0.001 sec)
+
+		Jawaban soal no.43 (TAMPILKAN DATA JUMLAH PEGAWAI BEDASARKAN GENDER JUMLAH MINIMAL 10 ORANG FUNGSI GROUP BY HAVING) "DIKARENAKAN    		                    DATA GENDER LK DAN PR SAYA BALANCE JDINYA SEPARO-SEPARO LK DAN PR"
+
+MariaDB [dbpegawai]> SELECT jenis_kelamin, count(*) AS jumlah_pegawai from pegawai
+    -> GROUP BY jenis_kelamin
+    -> HAVING count(*) >= 9;
++---------------+----------------+
+| jenis_kelamin | jumlah_pegawai |
++---------------+----------------+
+| Laki Laki     |              9 |
+| Prempuan      |              9 |
++---------------+----------------+
+2 rows in set (0.001 sec)
+
+		Jawaban soal no.44 (CARI DATA PEGAWAI NAMA AWAL MUHAMMAD)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE nama like 'Muhammad%';
++----+-------+----------------------------+---------------+-----------+------------+----------+-----------+-------------------+----+------+
+| id | nip   | nama                       | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat            | bb | umur |
++----+-------+----------------------------+---------------+-----------+------------+----------+-----------+-------------------+----+------+
+|  1 | 20001 | Muhammad Taufiqurrahman    | Laki Laki     | Jakarta   | 1989-07-29 |        1 |         1 | Jl. Selada No. 45 | 50 |   35 |
+|  7 | 20007 | Muhammad Al Fajri          | Laki Laki     | Cianjur   | 1981-07-07 |        2 |         2 | Jl. Kentang No. 7 | 70 |   43 |
+| 11 | 20011 | Muhammad Danish Suju       | Laki Laki     | Bojong    | 1985-11-11 |        3 |         1 | Jl. Buncis No. 11 | 68 |   39 |
+| 13 | 20013 | Muhammad Rasyid Sholahudin | Laki Laki     | Jonggol   | 2001-01-13 |        3 |         3 | Jl. Lada No. 13   | 58 |   23 |
++----+-------+----------------------------+---------------+-----------+------------+----------+-----------+-------------------+----+------+
+4 rows in set (0.001 sec)
+
+		Jawaban soal no.45 (CARI DATA PEGAWAI BERAKHIRAN NAMA SANTOSO)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE nama like '%Santoso';
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+| id | nip   | nama           | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat              | bb | umur |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+| 15 | 20015 | Kurnia Santoso | Laki Laki     | Jakarta   | 1987-05-15 |        3 |         4 | Jl. Lengkuas No. 25 | 66 |   37 |
++----+-------+----------------+---------------+-----------+------------+----------+-----------+---------------------+----+------+
+1 row in set (0.001 sec)
+
+		Jawaban soal no.46 (CARI DATA PEGAWAI YANG MENGANDUNG NAMA ASEP)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE nama like '%Asep%';
++----+-------+------------+---------------+-----------+------------+----------+-----------+-------------------+----+------+
+| id | nip   | nama       | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat            | bb | umur |
++----+-------+------------+---------------+-----------+------------+----------+-----------+-------------------+----+------+
+| 17 | 20017 | Asep Rohim | Laki Laki     | Jakarta   | 1988-06-25 |        4 |         2 | Jl. Terong No. 35 | 75 |   36 |
++----+-------+------------+---------------+-----------+------------+----------+-----------+-------------------+----+------+
+1 row in set (0.001 sec)
+
+		Jawaban soal no.47 (CARI DATA PEGAWAI HURUF KELIMA S)
+
+MariaDB [dbpegawai]> SELECT * from pegawai
+    -> WHERE substring(nama, 5,1) = 'S';
++----+-------+--------------------+---------------+-------------+------------+----------+-----------+-----------------+----+------+
+| id | nip   | nama               | jenis_kelamin | tmp_lahir   | tgl_lahir  | iddivisi | idjabatan | alamat          | bb | umur |
++----+-------+--------------------+---------------+-------------+------------+----------+-----------+-----------------+----+------+
+| 20 | 20020 | Nafisa khairunnisa | Prempuan      | Pangalengan | 2008-08-20 |        4 |         4 | Jl. Toge No. 20 | 39 |   16 |
++----+-------+--------------------+---------------+-------------+------------+----------+-----------+-----------------+----+------+
+1 row in set (0.001 sec)
+
